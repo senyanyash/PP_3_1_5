@@ -9,25 +9,41 @@
 <body>
 <form th:method="PATCH" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}" accept-charset="UTF-8">
     <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" th:field="*{name}" id="name">
+        <label for="name">  Name</label>
+        <input type="text" th:field="*{name}" class="form-control" id="name">
     </div>
 
     <div class="form-group">
-        <label for="lastName">Last name</label>
-        <input type="text" th:field="*{lastName}" id="lastName">
+        <label for="lastName">  Last name</label>
+        <input type="text" th:field="*{lastName}" class="form-control" id="lastName">
     </div>
 
     <div class="form-group">
-        <label for="age">Age</label>
-        <input type="number" th:field="*{age}" id="age">
+        <label for="age">  Age</label>
+        <input type="number" th:field="*{age}" class="form-control" id="age">
     </div>
 
     <div class="form-group">
-        <label for="country">Country</label>
-        <input type="text" th:field="*{country}" id="country">
+        <label for="country">  Country</label>
+        <input type="text" th:field="*{country}" class="form-control" id="country">
     </div>
 
+    <div class="form-group">
+        <label for="username">  Username</label>
+        <input type="text" th:field="*{username}" class="form-control" id="username">
+    </div>
+
+    <div class="form-group">
+        <label class="col-form-label col-4">Roles</label>
+        <div class="col-8">
+            <th:block th:each="role : ${allRoles}">
+                <input type="checkbox" th:field="*{roles}"
+                       th:value="${role}"
+                       th:text="${role}" class="m-2" />
+
+            </th:block>
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary">Update user</button>
 </form>
 <a href="/logout">

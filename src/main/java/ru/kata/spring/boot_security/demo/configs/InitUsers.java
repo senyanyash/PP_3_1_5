@@ -23,7 +23,7 @@ public class InitUsers implements CommandLineRunner {
         this.userService = userService;
         this.roleService = roleService;
     }
-
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
         Role ROLE_USER = new Role("ROLE_USER");
@@ -36,7 +36,7 @@ public class InitUsers implements CommandLineRunner {
         user.setAge(22);
         user.setCountry("Russia");
         user.setUsername("user");
-        user.setUserpassword("user");
+        user.setUserpassword("$2a$12$JmhK17VWSF.uW4Okbl.84OZpOEsHJZYMrp.f0EiVQpCxEdCfsH1wi"); //user
         user.setRoles(Arrays.asList(ROLE_USER));
         userService.addUser(user);
         User admin = new User();
@@ -45,7 +45,7 @@ public class InitUsers implements CommandLineRunner {
         admin.setAge(22);
         admin.setCountry("USA");
         admin.setUsername("admin");
-        admin.setUserpassword("admin");
+        admin.setUserpassword("$2a$12$JhJ/qTSUUMrPwmYGm3.MdeXnPLfurow25qd3s42xjdnP79s1w/x7a"); //admin
         admin.setRoles(Arrays.asList(ROLE_USER, ROLE_ADMIN));
         userService.addUser(admin);
     }

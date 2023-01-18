@@ -24,6 +24,6 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Role getRoleById(Long id) {
-        return (Role) em.createQuery("from User where id = :id").setParameter("id", id).getSingleResult();
+        return (Role) em.createQuery("from Role where id = :id").setParameter("id", id).getSingleResult();
     }
 }
