@@ -29,12 +29,12 @@
     </div>
 
     <div class="form-group">
-        <label for="username">  Username</label>
+        <label for="username">  Email</label>
         <input type="text" th:field="*{username}" class="form-control" id="username">
     </div>
 
     <div class="form-group">
-        <label for="userpassword">  Username</label>
+        <label for="userpassword">  Password</label>
         <input type="hidden" th:field="*{userpassword}" th:value="${user.getUserpassword()}" class="form-control" id="userpassword">
     </div>
 
@@ -44,7 +44,7 @@
                 <input type="checkbox" th:each="role : ${allRoles}"
                        th:field="*{roles}"
                        th:text="${role}"
-                       th:value="${role}" class="m-2" />
+                       th:value="${role.id}" class="m-2" />
         </div>
     </div>
 

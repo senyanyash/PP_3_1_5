@@ -34,7 +34,7 @@ public class User implements UserDetails {
 //    @Min(value = 0, message = "Age should be above 0")
     private int age;
     @Column(name = "country")
-//    @NotBlank
+    @NotBlank
     private String country;
     @Column(name = "username")
 //    @Email

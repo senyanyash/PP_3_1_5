@@ -14,7 +14,7 @@
         <th scope="col">Last name</th>
         <th scope="col">Age</th>
         <th scope="col">Country</th>
-        <th scope="col">Username</th>
+        <th scope="col">Email</th>
         <th scope="col">Roles</th>
         <th scope="col">Actions</th>
     </tr>
@@ -28,12 +28,11 @@
         <td th:text="${user.getUsername()}"></td>
         <td th:text="${user.getRoles()}"></td>
         <td>
-            <a th:href="@{/admin/{id}/edit(id=${user.getId()})}">
-                <button type="button" class="btn btn-primary" >
-                    Edit user</button>
+            <a  th:href="@{/admin/{id}/edit(id=${user.getId()})}">
+                <button style="padding-right: 20px" type="button" class="btn btn-primary" >Edit user</button>
             </a>
             <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
-                <button type="submit" class="btn btn-primary">Delete user</button>
+                <button type="submit" class="btn btn-danger">Delete user</button>
             </form>
         </td>
     </tr>
