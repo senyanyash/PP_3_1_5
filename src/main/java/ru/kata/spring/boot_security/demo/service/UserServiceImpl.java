@@ -1,54 +1,46 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
+
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
-    private UserDao userDao;
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private UserRepository userRepository;
 
     @Override
-    @Transactional
     public void addUser(User user) {
-        userDao.addUser(user);
+        userRepository.save(user);
     }
 
     @Override
-    @Transactional
     public void removeUser(User user) {
-        userDao.removeUser(user);
+        userRepository.delete(user);
     }
 
     @Override
-    @Transactional
     public void updateUser(User user) {
-        userDao.updateUser(user);
+        userRepository.save(user);
     }
 
     @Override
     public List<User> allUsers() {
-        return userDao.allUsers();
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(Long id) {
-        return userDao.getUserById(id);
+        return userRepository.getById(id);
     }
 
-
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userDao.getUserByUsername(username);
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

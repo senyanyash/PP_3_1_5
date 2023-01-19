@@ -3,26 +3,21 @@ package ru.kata.spring.boot_security.demo.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import javax.transaction.Transactional;
 import java.util.Arrays;
 
 @Component
 public class InitUsers implements CommandLineRunner {
-
+    @Autowired
     private UserService userService;
+    @Autowired
     private RoleService roleService;
 
-    @Autowired
-    public InitUsers(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    }
     @Transactional
     @Override
     public void run(String... args) throws Exception {
@@ -36,7 +31,7 @@ public class InitUsers implements CommandLineRunner {
         user.setAge(22);
         user.setCountry("Russia");
         user.setUsername("user");
-        user.setUserpassword("$2a$12$JmhK17VWSF.uW4Okbl.84OZpOEsHJZYMrp.f0EiVQpCxEdCfsH1wi"); //user
+        user.setUserpassword("$2a$12$7tpF2m2ptr7STdTQzjrW6emqpOoxqo.jpuXzS0KdwXrs6XaAOUFrW"); //user
         user.setRoles(Arrays.asList(ROLE_USER));
         userService.addUser(user);
         User admin = new User();
@@ -45,7 +40,7 @@ public class InitUsers implements CommandLineRunner {
         admin.setAge(22);
         admin.setCountry("USA");
         admin.setUsername("admin");
-        admin.setUserpassword("$2a$12$JhJ/qTSUUMrPwmYGm3.MdeXnPLfurow25qd3s42xjdnP79s1w/x7a"); //admin
+        admin.setUserpassword("$2a$12$hx6glQx90Iks7yFrLf83au3CM.0uFidNxPxf246HjBe8/EKggM3oy"); //admin
         admin.setRoles(Arrays.asList(ROLE_USER, ROLE_ADMIN));
         userService.addUser(admin);
     }

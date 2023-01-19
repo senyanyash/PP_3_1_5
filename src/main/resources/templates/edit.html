@@ -34,16 +34,20 @@
     </div>
 
     <div class="form-group">
+        <label for="userpassword">  Username</label>
+        <input type="hidden" th:field="*{userpassword}" th:value="${user.getUserpassword()}" class="form-control" id="userpassword">
+    </div>
+
+    <div class="form-group">
         <label class="col-form-label col-4">Roles</label>
         <div class="col-8">
-            <th:block th:each="role : ${allRoles}">
-                <input type="checkbox" th:field="*{roles}"
-                       th:value="${role}"
-                       th:text="${role}" class="m-2" />
-
-            </th:block>
+                <input type="checkbox" th:each="role : ${allRoles}"
+                       th:field="*{roles}"
+                       th:text="${role}"
+                       th:value="${role}" class="m-2" />
         </div>
     </div>
+
     <button type="submit" class="btn btn-primary">Update user</button>
 </form>
 <a href="/logout">
