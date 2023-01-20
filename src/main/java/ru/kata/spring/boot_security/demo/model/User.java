@@ -1,9 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.UniqueElements;
@@ -12,10 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -25,25 +20,31 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name")
-//    @Min(value = 2, message = "Minimum name length is 2 characters")
+    @NotEmpty(message = "Это поле не должно быть пустым")
     private String name;
     @Column(name = "last_name")
-//    @Min(value = 2, message = "Minimum last name length is 2 characters")
+    @NotEmpty(message = "Это поле не должно быть пустым")
     private String lastName;
     @Column(name = "age")
-//    @Min(value = 0, message = "Age should be above 0")
+    @Min(value = 0, message = "Возраст должен быть больше 0")
     private int age;
     @Column(name = "country")
-    @NotBlank
+    @NotEmpty(message = "Это поле не должно быть пустым")
     private String country;
+
+
+
     @Column(name = "username")
-//    @Email
+    @NotEmpty(message = "Это поле не должно быть пустым")
+    @Email(message = "Неверный формат email")
     private String username;
     @Column(name = "userpassword")
+    @Size(min = 4,max = 255, message = "Минимальная длина пароля - 4 символа")
     private String userpassword;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @Size(min=1, message = "Нужно выбрать хотя бы одну роль")
     private List<Role> roles = Collections.emptyList();
 
     public void setUsername(String username) {
@@ -167,5 +168,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id) && username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username);
     }
 }

@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.configs;
 
+import com.mysql.cj.protocol.AuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -14,22 +15,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import ru.kata.spring.boot_security.demo.service.MyUserDetailsService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.sql.DataSource;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final SuccessUserHandler successUserHandler;
-    private final UserService userService;
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService) {
+    private SuccessUserHandler successUserHandler;
+    private MyUserDetailsService userService;
+
+    @Autowired
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, MyUserDetailsService userService) {
         this.successUserHandler = successUserHandler;
         this.userService = userService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/","/reg").permitAll()
                 .antMatchers("/user").hasAnyRole("USER", "ADMIN")

@@ -1,12 +1,10 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
-import ru.kata.spring.boot_security.demo.configs.WebSecurityConfig;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
+
 
 @Entity
 @Table
@@ -23,6 +21,19 @@ public class Role implements GrantedAuthority {
 
     public Role(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(name, role.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     public Role(Long id, String name) {
@@ -44,7 +55,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return name;
+        return name.substring(5);
     }
 
     public String getName() {

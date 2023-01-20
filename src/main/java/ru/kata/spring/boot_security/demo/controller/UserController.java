@@ -3,12 +3,14 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -32,8 +34,10 @@ public class UserController {
         model.addAttribute("allRoles", roleService.getAllRoles());
         return "new";
     }
-    @PostMapping("/admin")
-    public String addUser(@ModelAttribute("user") User user) {
+    @PostMapping("/admin/new")
+    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult br, Model model) {
+        model.addAttribute("allRoles", roleService.getAllRoles());
+        if (br.hasErrors()) return "new";
         userService.addUser(user);
         return "redirect:/admin";
     }
@@ -52,8 +56,10 @@ public class UserController {
         return "edit";
     }
 
-    @PatchMapping("admin/{id}")
-    public String editUser(@ModelAttribute("user") User user) {
+    @PatchMapping("admin/{id}/edit")
+    public String editUser(@ModelAttribute("user") @Valid User user, BindingResult br, Model model) {
+        model.addAttribute("allRoles", roleService.getAllRoles());
+        if (br.hasErrors()) return "edit";
         userService.updateUser(user);
         return "redirect:/admin";
     }
@@ -66,7 +72,7 @@ public class UserController {
 
     @GetMapping("user")
     public String getUser(Model model, Principal principal) {
-        User user = (User) userService.getUserByUsername(principal.getName());
+        User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", user);
         return "user";
     }

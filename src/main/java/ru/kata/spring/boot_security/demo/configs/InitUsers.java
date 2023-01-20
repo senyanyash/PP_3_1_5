@@ -13,10 +13,15 @@ import java.util.Arrays;
 
 @Component
 public class InitUsers implements CommandLineRunner {
+
+    private final UserService userService;
+
+    private final RoleService roleService;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleService roleService;
+    public InitUsers(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    }
 
     @Transactional
     @Override
@@ -30,8 +35,8 @@ public class InitUsers implements CommandLineRunner {
         user.setLastName("Userovich");
         user.setAge(22);
         user.setCountry("Russia");
-        user.setUsername("user");
-        user.setUserpassword("$2a$12$7tpF2m2ptr7STdTQzjrW6emqpOoxqo.jpuXzS0KdwXrs6XaAOUFrW"); //user
+        user.setUsername("user@user.com");
+        user.setUserpassword("user"); //user $2a$12$7tpF2m2ptr7STdTQzjrW6emqpOoxqo.jpuXzS0KdwXrs6XaAOUFrW
         user.setRoles(Arrays.asList(ROLE_USER));
         userService.addUser(user);
         User admin = new User();
@@ -39,8 +44,8 @@ public class InitUsers implements CommandLineRunner {
         admin.setLastName("Adminovich");
         admin.setAge(22);
         admin.setCountry("USA");
-        admin.setUsername("admin");
-        admin.setUserpassword("$2a$12$hx6glQx90Iks7yFrLf83au3CM.0uFidNxPxf246HjBe8/EKggM3oy"); //admin
+        admin.setUsername("admin@admin.com");
+        admin.setUserpassword("admin"); //admin $2a$12$hx6glQx90Iks7yFrLf83au3CM.0uFidNxPxf246HjBe8/EKggM3oy
         admin.setRoles(Arrays.asList(ROLE_USER, ROLE_ADMIN));
         userService.addUser(admin);
     }
