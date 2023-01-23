@@ -27,39 +27,59 @@ public class UserController {
     }
 
 
-    @GetMapping("admin/new")
-    public String createUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+//    @GetMapping("admin/new")
+//    public String createUser(Model model) {
+//        User user = new User();
+//        model.addAttribute("user", user);
+//        model.addAttribute("allRoles", roleService.getAllRoles());
+//        return "new";
+//    }
+    @PostMapping("/admin")
+    public String addUser(@ModelAttribute("newUser") User user, BindingResult br, Model model, Principal principal) {
+        User curUser = userService.getUserByUsername(principal.getName());
+        User newUser = new User();
+        User editUser = new User();
+        model.addAttribute("editUser", editUser);
+        model.addAttribute("currentUser", curUser);
+        model.addAttribute("allUsers", userService.allUsers());
         model.addAttribute("allRoles", roleService.getAllRoles());
-        return "new";
-    }
-    @PostMapping("/admin/new")
-    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult br, Model model) {
-        model.addAttribute("allRoles", roleService.getAllRoles());
-        if (br.hasErrors()) return "new";
+        if (br.hasErrors()) return "adminpage";
         userService.addUser(user);
         return "redirect:/admin";
     }
     @GetMapping("/admin")
-    public String allUsers(Model model) {
+    public String allUsers(Model model, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        User newUser = new User();
+        User editUser = new User();
+        model.addAttribute("editUser", editUser);
+        model.addAttribute("currentUser", user);
+        model.addAttribute("newUser", newUser);
         model.addAttribute("allUsers", userService.allUsers());
-        return "admin";
-    }
-
-    @GetMapping("admin/{id}/edit")
-    public String getEditUser(@PathVariable("id") Long id, Model model) {
-        List<Role> roles = roleService.getAllRoles();
-        User user = userService.getUserById(id);
-        model.addAttribute("allRoles", roles);
-        model.addAttribute("user", user);
-        return "edit";
-    }
-
-    @PatchMapping("admin/{id}/edit")
-    public String editUser(@ModelAttribute("user") @Valid User user, BindingResult br, Model model) {
         model.addAttribute("allRoles", roleService.getAllRoles());
-        if (br.hasErrors()) return "edit";
+        return "adminpage";
+    }
+
+//    @GetMapping("admin/{id}/edit")
+//    public String getEditUser(@PathVariable("id") Long id, Model model) {
+//        List<Role> roles = roleService.getAllRoles();
+//        User user = userService.getUserById(id);
+//        model.addAttribute("allRoles", roles);
+//        model.addAttribute("user", user);
+//        return "edit";
+//    }
+
+    @PatchMapping("admin/{id}")
+    public String editUser(@ModelAttribute("editUser") User user, BindingResult br, Model model, Principal principal) {
+        User curUser = userService.getUserByUsername(principal.getName());
+        User newUser = new User();
+        User editUser = new User();
+        model.addAttribute("editUser", editUser);
+        model.addAttribute("currentUser", curUser);
+        model.addAttribute("newUser", newUser);
+        model.addAttribute("allUsers", userService.allUsers());
+        model.addAttribute("allRoles", roleService.getAllRoles());
+        if (br.hasErrors()) return "adminpage";
         userService.updateUser(user);
         return "redirect:/admin";
     }
@@ -73,8 +93,12 @@ public class UserController {
     @GetMapping("user")
     public String getUser(Model model, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
-        model.addAttribute("user", user);
-        return "user";
+        User newUser = new User();
+        model.addAttribute("currentUser", user);
+        model.addAttribute("allUsers", userService.allUsers());
+        model.addAttribute("allRoles", roleService.getAllRoles());
+
+        return "userpage";
     }
 
 }

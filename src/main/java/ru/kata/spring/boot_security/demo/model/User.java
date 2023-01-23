@@ -20,31 +20,31 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name")
-    @NotEmpty(message = "Это поле не должно быть пустым")
+//    @NotEmpty(message = "Это поле не должно быть пустым")
     private String name;
     @Column(name = "last_name")
-    @NotEmpty(message = "Это поле не должно быть пустым")
+//    @NotEmpty(message = "Это поле не должно быть пустым")
     private String lastName;
     @Column(name = "age")
-    @Min(value = 0, message = "Возраст должен быть больше 0")
+//    @Min(value = 0, message = "Возраст должен быть больше 0")
     private int age;
     @Column(name = "country")
-    @NotEmpty(message = "Это поле не должно быть пустым")
+//    @NotEmpty(message = "Это поле не должно быть пустым")
     private String country;
 
 
 
     @Column(name = "username")
-    @NotEmpty(message = "Это поле не должно быть пустым")
-    @Email(message = "Неверный формат email")
+//    @NotEmpty(message = "Это поле не должно быть пустым")
+//    @Email(message = "Неверный формат email")
     private String username;
     @Column(name = "userpassword")
-    @Size(min = 4,max = 255, message = "Минимальная длина пароля - 4 символа")
+//    @Size(min = 4,max = 255, message = "Минимальная длина пароля - 4 символа")
     private String userpassword;
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    @Size(min=1, message = "Нужно выбрать хотя бы одну роль")
+//    @Size(min=1, message = "Нужно выбрать хотя бы одну роль")
     private List<Role> roles = Collections.emptyList();
 
     public void setUsername(String username) {
@@ -66,7 +66,6 @@ public class User implements UserDetails {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
-
 
 
     public User() {
@@ -124,6 +123,17 @@ public class User implements UserDetails {
 
     public void addRole(Role role) {
         roles.add(role);
+    }
+
+    public void changeUser(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.lastName = user.getLastName();
+        this.country = user.getCountry();
+        this.roles = user.getRoles();
+        this.age = user.getAge();
+        this.username = user.getUsername();
+        this.userpassword = user.getUserpassword();
     }
     @Override
     public String toString() {
