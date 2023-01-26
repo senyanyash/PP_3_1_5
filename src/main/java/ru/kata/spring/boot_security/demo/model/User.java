@@ -1,17 +1,10 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.annotation.Validated;
-
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Entity
 @Table
@@ -20,32 +13,24 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name")
-//    @NotEmpty(message = "Это поле не должно быть пустым")
     private String name;
     @Column(name = "last_name")
-//    @NotEmpty(message = "Это поле не должно быть пустым")
     private String lastName;
     @Column(name = "age")
-//    @Min(value = 0, message = "Возраст должен быть больше 0")
     private int age;
     @Column(name = "country")
-//    @NotEmpty(message = "Это поле не должно быть пустым")
     private String country;
 
 
 
     @Column(name = "username")
-//    @NotEmpty(message = "Это поле не должно быть пустым")
-//    @Email(message = "Неверный формат email")
     private String username;
     @Column(name = "userpassword")
-//    @Size(min = 4,max = 255, message = "Минимальная длина пароля - 4 символа")
     private String userpassword;
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-//    @Size(min=1, message = "Нужно выбрать хотя бы одну роль")
-    private List<Role> roles = Collections.emptyList();
+    private Set<Role> roles = new HashSet<>();
 
     public void setUsername(String username) {
         this.username = username;
@@ -59,11 +44,11 @@ public class User implements UserDetails {
         this.userpassword = userpassword;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -71,7 +56,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String lastName, int age, String country, String username, String userpassword, List<Role> roles) {
+    public User(String name, String lastName, int age, String country, String username, String userpassword, Set<Role> roles) {
         this.name = name;
         this.lastName = lastName;
         this.age = age;

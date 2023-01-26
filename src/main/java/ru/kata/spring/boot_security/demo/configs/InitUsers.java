@@ -9,18 +9,21 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import javax.persistence.EntityManager;
 import java.util.Arrays;
+import java.util.HashSet;
 
 @Component
 public class InitUsers implements CommandLineRunner {
 
     private final UserService userService;
-
+    private final EntityManager em;
     private final RoleService roleService;
     @Autowired
-    public InitUsers(UserService userService, RoleService roleService) {
+    public InitUsers(UserService userService, RoleService roleService, EntityManager em) {
         this.userService = userService;
         this.roleService = roleService;
+        this.em = em;
     }
 
     @Transactional
@@ -37,7 +40,7 @@ public class InitUsers implements CommandLineRunner {
         user.setCountry("Russia");
         user.setUsername("user@user.com");
         user.setUserpassword("user"); //user $2a$12$7tpF2m2ptr7STdTQzjrW6emqpOoxqo.jpuXzS0KdwXrs6XaAOUFrW
-        user.setRoles(Arrays.asList(ROLE_USER));
+        user.setRoles(new HashSet<>(Arrays.asList(ROLE_USER)));
         userService.addUser(user);
         User admin = new User();
         admin.setName("Admin");
@@ -46,7 +49,7 @@ public class InitUsers implements CommandLineRunner {
         admin.setCountry("USA");
         admin.setUsername("admin@admin.com");
         admin.setUserpassword("admin"); //admin $2a$12$hx6glQx90Iks7yFrLf83au3CM.0uFidNxPxf246HjBe8/EKggM3oy
-        admin.setRoles(Arrays.asList(ROLE_USER, ROLE_ADMIN));
+        admin.setRoles(new HashSet<>(Arrays.asList(ROLE_USER, ROLE_ADMIN)));
         userService.addUser(admin);
     }
 }
