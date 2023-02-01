@@ -134,8 +134,12 @@ function addNewUser(form) {
 
 
 
-
 function showDeleteModal(id) {
+    document.getElementById('closeDeleteModal').setAttribute('onclick', () => {
+        deleteModal.hide();
+        document.getElementById('deleteUser').reset();
+    });
+
     let request = new Request("http://localhost:8080/api/users/" + id, {
         method: 'GET',
         headers: {
@@ -174,7 +178,10 @@ function showDeleteModal(id) {
                     'Content-Type': 'application/json',
                 },
             });
-            fetch(request).then(() => getUsers());
+            fetch(request).then(() => {
+                getUsers();
+            });
+            document.getElementById('deleteUser').reset();
         }
 
         deleteModal.hide();
@@ -209,8 +216,7 @@ function showEditModal(id) {
         }
     );
 
-    let editForm = document.getElementById('editUser');
-    editForm.addEventListener('submit', submitFormEditUser);
+    document.getElementById('editUser').addEventListener('submit', submitFormEditUser);
 }
 
 function submitFormEditUser(event) {
@@ -238,6 +244,7 @@ function submitFormEditUser(event) {
         function (response) {
             console.log(response)
             getUsers();
+            event.target.reset();
             editModal.hide();
         });
 
