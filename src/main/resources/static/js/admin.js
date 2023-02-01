@@ -46,7 +46,7 @@ function showUsers(table) {
         temp += "<td>" + user.username + "</td>"
         temp += "<td>" + user.roles.map(role => role.name.substring(5)) + "</td>"
         temp += "<td>" + `<a onclick='showEditModal(${user.id})' class="btn btn-outline-info" id="edit">Edit user</a>` + "</td>"
-        temp += "<td>" + `<a onclick='showDeleteModal(${user.id})' class="btn btn-outline-danger" id="deleteButton">Delete user</a>` + "</td>"
+        temp += "<td>" + `<a onclick='showDeleteModal(${user.id})' class="btn btn-outline-danger" id="delete">Delete user</a>` + "</td>"
         temp += "</tr>"
         document.getElementById("allUsersBody").innerHTML = temp;
     })
@@ -132,15 +132,7 @@ function addNewUser(form) {
     bootstrap.Tab.getInstance(triggerE1).show()
 }
 
-function submitFormDeleteUser(id) {
-    let request = new Request('http://localhost:8080/api/users/' + id, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    fetch(request).then(() => getUsers());
-}
+
 
 
 function showDeleteModal(id) {
@@ -171,10 +163,20 @@ function showDeleteModal(id) {
             deleteModal.show();
         }
     );
-
-    document.getElementById('deleteUser').addEventListener('submit', function (event) {
+    var isDelete = false;
+    document.getElementById('deleteUser').addEventListener('submit', event => {
         event.preventDefault();
-        submitFormDeleteUser(id);
+        if (!isDelete) {
+            isDelete = true;
+            let request = new Request('http://localhost:8080/api/users/' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            fetch(request).then(() => getUsers());
+        }
+
         deleteModal.hide();
     });
 }
