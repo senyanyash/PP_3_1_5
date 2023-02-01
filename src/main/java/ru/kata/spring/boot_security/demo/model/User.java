@@ -25,9 +25,9 @@ public class User implements UserDetails {
 
     @Column(name = "username")
     private String username;
-    @Column(name = "userpassword")
-    private String userpassword;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @Column(name = "password")
+    private String password;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
@@ -37,11 +37,11 @@ public class User implements UserDetails {
     }
 
     public String getUserpassword() {
-        return userpassword;
+        return password;
     }
 
     public void setUserpassword(String userpassword) {
-        this.userpassword = userpassword;
+        this.password = userpassword;
     }
 
     public Set<Role> getRoles() {
@@ -62,7 +62,7 @@ public class User implements UserDetails {
         this.age = age;
         this.country = country;
         this.username = username;
-        this.userpassword = userpassword;
+        this.password = userpassword;
         this.roles = roles;
     }
 
@@ -118,15 +118,20 @@ public class User implements UserDetails {
         this.roles = user.getRoles();
         this.age = user.getAge();
         this.username = user.getUsername();
-        this.userpassword = user.getUserpassword();
+        this.password = user.getUserpassword();
     }
+
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", country='" + country + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 
@@ -137,7 +142,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return userpassword;
+        return password;
     }
 
     @Override

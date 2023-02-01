@@ -51,5 +51,14 @@ public class InitUsers implements CommandLineRunner {
         admin.setUserpassword("admin"); //admin $2a$12$hx6glQx90Iks7yFrLf83au3CM.0uFidNxPxf246HjBe8/EKggM3oy
         admin.setRoles(new HashSet<>(Arrays.asList(ROLE_USER, ROLE_ADMIN)));
         userService.addUser(admin);
+        User admin1 = new User();
+        admin1.setName("Admin1");
+        admin1.setLastName("Adminovich");
+        admin1.setAge(22);
+        admin1.setCountry("USA");
+        admin1.setUsername("admin1@admin.com");
+        admin1.setUserpassword("admin"); //admin $2a$12$hx6glQx90Iks7yFrLf83au3CM.0uFidNxPxf246HjBe8/EKggM3oy
+        admin1.setRoles(new HashSet<>(Arrays.asList(ROLE_USER, ROLE_ADMIN)));
+        userService.addUser(admin1);
     }
 }
