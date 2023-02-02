@@ -17,30 +17,10 @@ import java.util.List;
 @RequestMapping("/")
 @Controller
 public class UserController {
-    private UserService userService;
-    private RoleService roleService;
 
-    @Autowired
-    public UserController(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    }
-
-
-
-    @GetMapping("admin")
-    public String allUsers() {
-        return "adminpage";
-    }
 
     @GetMapping("user")
-    public String getUser(Model model, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
-        User newUser = new User();
-        model.addAttribute("currentUser", user);
-        model.addAttribute("allUsers", userService.allUsers());
-        model.addAttribute("allRoles", roleService.getAllRoles());
-
+    public String user() {
         return "userpage";
     }
 

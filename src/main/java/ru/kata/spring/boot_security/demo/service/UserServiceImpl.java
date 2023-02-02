@@ -18,11 +18,10 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,RoleRepository roleRepository, @Lazy PasswordEncoder passwordEncoder) {
@@ -32,17 +31,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void addUser(User user) {
         user.setUserpassword(passwordEncoder.encode(user.getUserpassword()));
         userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public void removeUser(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public void updateUser(User user) {
         userRepository.save(user);
     }
