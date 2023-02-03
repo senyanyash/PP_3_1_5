@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.controller;
+package ru.kata.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,10 @@ import java.util.List;
 @Controller
 public class UserController {
 
+    @GetMapping("admin")
+    public String admin() {
+        return "adminpage";
+    }
 
     @GetMapping("user")
     public String user() {

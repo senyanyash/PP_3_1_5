@@ -31,7 +31,7 @@ public class RestUserController {
 
 
     @PostMapping()
-    public ResponseEntity<?> addUser(@RequestBody User user) {
+    public ResponseEntity<Void> addUser(@RequestBody User user) {
         System.out.println(user);
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -47,14 +47,14 @@ public class RestUserController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editUser(@RequestBody User user) {
+    public ResponseEntity<Void> editUser(@RequestBody User user) {
         System.out.println(user);
         userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.removeUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
